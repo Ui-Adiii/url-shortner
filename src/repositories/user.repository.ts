@@ -1,21 +1,17 @@
 import { db } from "../prisma/db";
+import type { IUser, UpdateUser } from "../types/user";
 
 class UserRepository {
   createUser({
     name,
     email,
-    hash,
+    password,
     avatar,
-  }: {
-    name: string;
-    email: string;
-    hash: string;
-    avatar: string;
-  }) {
+  }: IUser) {
     return db.orm.public.User.create({
       name,
       email,
-      password: hash,
+      password,
       avatar,
     });
   }
@@ -24,11 +20,7 @@ class UserRepository {
     id,
     name,
     avatar,
-  }: {
-    id:string
-    name: string;
-    avatar: string;
-    }) {
+  }: UpdateUser) {
 
     return db.orm.public.User.where({id}).update({
       name,
@@ -36,7 +28,7 @@ class UserRepository {
     });
   }
 
-  getUser({ id }: {id:string}) {
+  getUser({ id }: {id:string}){
     return db.orm.public.User.where({ id }).first();
   }
 

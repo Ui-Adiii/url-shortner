@@ -1,16 +1,13 @@
 import userRepository from "../repositories/user.repository.js";
+import type { IUser, UpdateUser } from "../types/user.js";
+
 
 class UserService {
-  async createUser(data: {
-    name: string;
-    email: string;
-    hash: string;
-    avatar: string;
-  }) {
+  async createUser(data: IUser) {
     return userRepository.createUser(data);
   }
 
-  async updateUser(data: { id: string; name: string; avatar: string }) {
+  async updateUser(data: UpdateUser) {
     return userRepository.updateUser(data);
   }
 
