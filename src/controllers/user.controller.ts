@@ -1,31 +1,66 @@
-import userService from "../services/user.service";
 import type { Request, Response } from "express";
-const createUser = async (req:Request, res:Response) => { 
-  try {
-    const {name,email,password } = req.body;
-    if (!name || !email || !password) { 
-      return res.status(400).json({
-        message: "All Fields are required",
-        success: false
-      })
-    }
 
-    const hash = password;
-    const user = await userService.createUser({ name, email,password:hash,avatar:null });
+import userService from "../services/user.service.js";
+import { signToken } from "../utils/token.js";
+import { asyncHandler } from "../utils/asyncHandler.js";
 
-    return res.status(201).json({
+const createUser = asyncHandler(async (req: Request, res: Response) => {
+  const { name, email, password } = req.body;
+
+  const user = await userService.createUser({
+    name,
+    email,
+    password,
+    avatar: null,
+  });
+
+  const token = signToken({ id: user.id });
+
+  return res
+    .cookie("token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      maxAge: 60 * 60 * 1000,
+    })
+    .status(201)
+    .json({
       message: "user registered successfully",
       success: true,
-      data:user
+      data: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        avatar: user.avatar,
+      },
+    });
+});
+
+const loginUser = asyncHandler(async (req: Request, res: Response) => {
+  const { password, email } = req.body;
+
+  const user = await userService.loginUser({ email, password });
+
+  const token = signToken({ id: user.id });
+
+  return res
+    .cookie("token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      maxAge: 60 * 60 * 1000,
     })
+    .status(200)
+    .json({
+      message: "user Login successfully",
+      success: true,
+      data: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        avatar: user.avatar,
+      },
+    });
+});
 
-  } catch (error:unknown) {
-    return res.status(500).json({
-      message:  error instanceof Error ? error.message : "Internal Server Error",
-      success:false
-    })
-  }
-}
-
-
-export {createUser};
+export { createUser, loginUser };

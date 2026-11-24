@@ -1,13 +1,9 @@
-import { db } from "../prisma/db";
-import type { IUser, UpdateUser } from "../types/user";
+import { db } from "../prisma/db.js";
+import type { IUser, UpdateUser } from "../types/user.js";
 
 class UserRepository {
-  createUser({
-    name,
-    email,
-    password,
-    avatar,
-  }: IUser) {
+  
+  createUser({ name, email, password, avatar }: IUser) {
     return db.orm.public.User.create({
       name,
       email,
@@ -16,24 +12,23 @@ class UserRepository {
     });
   }
 
-  updateUser({
-    id,
-    name,
-    avatar,
-  }: UpdateUser) {
-
-    return db.orm.public.User.where({id}).update({
+  updateUser({ id, name, avatar }: UpdateUser) {
+    return db.orm.public.User.where({ id }).update({
       name,
       avatar,
     });
   }
 
-  getUser({ id }: {id:string}){
+  getUserById({ id }: { id: string }) {
     return db.orm.public.User.where({ id }).first();
   }
 
+  getUserByEmail({ email }: { email: string }) {
+    return db.orm.public.User.where({ email }).first();
+  }
+
   deleteUser({ id }: { id: string }) {
-    return db.orm.public.User.where({id}).delete();
+    return db.orm.public.User.where({ id }).delete();
   }
 }
 
