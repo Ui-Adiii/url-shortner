@@ -3,6 +3,7 @@ import type { Request, Response } from "express";
 import userService from "../services/user.service.js";
 import { signToken } from "../utils/token.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
+import { AppError } from "../utils/AppError.js";
 
 const createUser = asyncHandler(async (req: Request, res: Response) => {
   const { name, email, password } = req.body;
@@ -63,4 +64,34 @@ const loginUser = asyncHandler(async (req: Request, res: Response) => {
     });
 });
 
-export { createUser, loginUser };
+
+const logoutUser = asyncHandler(async (req: Request, res: Response) => {
+  res.clearCookie("token");
+  return res
+    .status(200)
+    .json({
+      message: "user Logout successfully",
+      success: true,
+    });
+});
+const getMe = asyncHandler(async (req: Request, res: Response) => {
+  const userId = req.userId;
+  if (!userId) { 
+    throw new AppError("user id not found", 400);
+  }
+  const user = await userService.getUserById(userId);;
+  return res
+    .status(200)
+    .json({
+      message: "user Logout successfully",
+      success: true,
+      data: {
+        id:user?.id,
+        name: user?.name,
+        email: user?.email,
+        avatar: user?.avatar
+      }
+    });
+});
+
+export { createUser, loginUser, logoutUser, getMe };
