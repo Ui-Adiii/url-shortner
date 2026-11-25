@@ -5,11 +5,12 @@ import { createUser, getMe, loginUser, logoutUser } from '../controllers/user.co
 import { loginValidator, registerValidator } from '../validations/user.validation.js';
 import { validate } from '../middlewares/validate.middleware.js';
 import { authMiddleware } from '../middlewares/auth.middleware.js';
+import upload from '../middlewares/multer.middleware.js';
 
 
 const userRouter = express.Router()
 
-userRouter.post("/register", registerValidator, validate, createUser);
+userRouter.post("/register",upload.single('avatar'), registerValidator, validate, createUser);
 userRouter.post("/login", loginValidator, validate,loginUser);
 userRouter.get("/logout",logoutUser);
 userRouter.get("/me",authMiddleware,getMe);

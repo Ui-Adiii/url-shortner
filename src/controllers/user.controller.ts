@@ -4,15 +4,24 @@ import userService from "../services/user.service.js";
 import { signToken } from "../utils/token.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { AppError } from "../utils/AppError.js";
+import cloudinaryService from "../services/cloudinary.service.js";
 
 const createUser = asyncHandler(async (req: Request, res: Response) => {
   const { name, email, password } = req.body;
+  const file = req.file
+  let avatar = null;
+  console.log(file)
+  if (file) { 
+    console.log("File path:", file.path);
+    avatar = await cloudinaryService.uploadFile(file.path);
+    console.log("Cloudinary URL:", avatar);
+  }
 
   const user = await userService.createUser({
     name,
     email,
     password,
-    avatar: null,
+    avatar,
   });
 
   const token = signToken({ id: user.id });
@@ -63,7 +72,6 @@ const loginUser = asyncHandler(async (req: Request, res: Response) => {
       },
     });
 });
-
 
 const logoutUser = asyncHandler(async (req: Request, res: Response) => {
   res.clearCookie("token");
