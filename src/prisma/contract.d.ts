@@ -23,7 +23,7 @@ import type {
 } from '@prisma/orm-postgres/contract/types';
 
 export type StorageHash =
-  StorageHashBase<'e056853e7e8f4e8bc42b2bd5d19616131185d200e92eeb0f151bd038015a903a'>;
+  StorageHashBase<'a9b4c6733b4b962ccbced2501cf8c42f7cd14a9a3c48194a543660cb9ca25ddf'>;
 export type ExecutionHash =
   ExecutionHashBase<'b8e01731fdf08a456536af9916aed2e59e8b632028bd351fdd9b675d48eed975'>;
 export type ProfileHash =
@@ -312,9 +312,9 @@ export namespace Models {
   export type public_ShortUrl = {
     clicks: FieldOutputTypes['public']['ShortUrl']['clicks'];
     createdAt: FieldOutputTypes['public']['ShortUrl']['createdAt'];
-    full_url: FieldOutputTypes['public']['ShortUrl']['full_url'];
+    fullUrl: FieldOutputTypes['public']['ShortUrl']['fullUrl'];
     id: FieldOutputTypes['public']['ShortUrl']['id'];
-    short_url: FieldOutputTypes['public']['ShortUrl']['short_url'];
+    short: FieldOutputTypes['public']['ShortUrl']['short'];
     userId: FieldOutputTypes['public']['ShortUrl']['userId'];
     user: public_User | null;
     readonly [RelationKeys]?: 'user';
@@ -362,7 +362,7 @@ type ContractBase = Omit<
                 readonly clicks: {
                   readonly dataType: 'pg/int4';
                   readonly codecId: 'pg/int4@1';
-                  readonly nullable: false;
+                  readonly nullable: true;
                   readonly default: {
                     readonly kind: 'literal';
                     readonly value: DefaultLiteralValue<'pg/int4@1', 0>;
@@ -372,12 +372,12 @@ type ContractBase = Omit<
                 readonly createdAt: {
                   readonly dataType: 'pg/timestamptz';
                   readonly codecId: 'pg/timestamptz-date@1';
-                  readonly nullable: false;
+                  readonly nullable: true;
                   readonly default: { readonly kind: 'function'; readonly expression: 'now()' };
                   readonly typeParams: { readonly precision: 3 };
                   readonly many: false;
                 };
-                readonly full_url: {
+                readonly fullUrl: {
                   readonly dataType: 'pg/text';
                   readonly codecId: 'pg/text@1';
                   readonly nullable: false;
@@ -389,7 +389,7 @@ type ContractBase = Omit<
                   readonly nullable: false;
                   readonly many: false;
                 };
-                readonly short_url: {
+                readonly short: {
                   readonly dataType: 'pg/text';
                   readonly codecId: 'pg/text@1';
                   readonly nullable: false;
@@ -403,7 +403,7 @@ type ContractBase = Omit<
                 };
               };
               primaryKey: { readonly columns: readonly ['id'] };
-              uniques: readonly [{ readonly columns: readonly ['short_url'] }];
+              uniques: readonly [{ readonly columns: readonly ['short'] }];
               indexes: readonly [
                 {
                   readonly name: 'ShortUrl_userId_idx_a489d58a';
@@ -501,18 +501,18 @@ type ContractBase = Omit<
           readonly ShortUrl: {
             readonly fields: {
               readonly clicks: {
-                readonly nullable: false;
+                readonly nullable: true;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
               };
               readonly createdAt: {
-                readonly nullable: false;
+                readonly nullable: true;
                 readonly type: {
                   readonly kind: 'scalar';
                   readonly codecId: 'pg/timestamptz-date@1';
                   readonly typeParams: { readonly precision: 3 };
                 };
               };
-              readonly full_url: {
+              readonly fullUrl: {
                 readonly nullable: false;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
               };
@@ -520,7 +520,7 @@ type ContractBase = Omit<
                 readonly nullable: false;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/uuid@1' };
               };
-              readonly short_url: {
+              readonly short: {
                 readonly nullable: false;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
               };
@@ -546,9 +546,9 @@ type ContractBase = Omit<
               readonly fields: {
                 readonly clicks: { readonly column: 'clicks' };
                 readonly createdAt: { readonly column: 'createdAt' };
-                readonly full_url: { readonly column: 'full_url' };
+                readonly fullUrl: { readonly column: 'fullUrl' };
                 readonly id: { readonly column: 'id' };
-                readonly short_url: { readonly column: 'short_url' };
+                readonly short: { readonly column: 'short' };
                 readonly userId: { readonly column: 'userId' };
               };
             };

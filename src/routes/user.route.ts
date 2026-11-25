@@ -2,7 +2,7 @@ import express from 'express'
 
 
 import { createUser, getMe, loginUser, logoutUser } from '../controllers/user.controller.js';
-import { loginValidator, registerValidator } from '../validations/user.validation.js';
+import { loginValidator, registerValidator } from '../validations/user.validator.js';
 import { validate } from '../middlewares/validate.middleware.js';
 import { authMiddleware } from '../middlewares/auth.middleware.js';
 import upload from '../middlewares/multer.middleware.js';

@@ -18,12 +18,8 @@ class CloudinaryService {
        folder,
        resource_type: "auto",
      });
-
-     console.log("Upload successful:", result.secure_url);
-
      return result.secure_url;
    } catch (error) {
-     console.error("Cloudinary Error:", error);
      throw error;
    }
   }

@@ -10,11 +10,8 @@ const createUser = asyncHandler(async (req: Request, res: Response) => {
   const { name, email, password } = req.body;
   const file = req.file
   let avatar = null;
-  console.log(file)
   if (file) { 
-    console.log("File path:", file.path);
     avatar = await cloudinaryService.uploadFile(file.path);
-    console.log("Cloudinary URL:", avatar);
   }
 
   const user = await userService.createUser({

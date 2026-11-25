@@ -13,11 +13,11 @@ model User {
 
 model ShortUrl {
   id        Uuid     @id @onCreate(uuid())
-  full_url  String
-  short_url String   @unique
-  clicks    Int      @default(0)
-  createdAt DateTime @default(now())
+  fullUrl  String
+  short String   @unique
+  clicks    Int?      @default(0)
+  createdAt DateTime? @default(now())
   userId    String?
   user      User?    @relation(fields: [userId], references: [id])
-  @@index([short_url])
+  @@index([short])
 }

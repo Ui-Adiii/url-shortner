@@ -20,14 +20,14 @@
           "ShortUrl": {
             "fields": {
               "clicks": {
-                "nullable": false,
+                "nullable": true,
                 "type": {
                   "codecId": "pg/int4@1",
                   "kind": "scalar"
                 }
               },
               "createdAt": {
-                "nullable": false,
+                "nullable": true,
                 "type": {
                   "codecId": "pg/timestamptz-date@1",
                   "kind": "scalar",
@@ -36,7 +36,7 @@
                   }
                 }
               },
-              "full_url": {
+              "fullUrl": {
                 "nullable": false,
                 "type": {
                   "codecId": "pg/text@1",
@@ -50,7 +50,7 @@
                   "kind": "scalar"
                 }
               },
-              "short_url": {
+              "short": {
                 "nullable": false,
                 "type": {
                   "codecId": "pg/text@1",
@@ -91,14 +91,14 @@
                 "createdAt": {
                   "column": "createdAt"
                 },
-                "full_url": {
-                  "column": "full_url"
+                "fullUrl": {
+                  "column": "fullUrl"
                 },
                 "id": {
                   "column": "id"
                 },
-                "short_url": {
-                  "column": "short_url"
+                "short": {
+                  "column": "short"
                 },
                 "userId": {
                   "column": "userId"
@@ -229,7 +229,7 @@
                     "kind": "literal",
                     "value": 0
                   },
-                  "nullable": false
+                  "nullable": true
                 },
                 "createdAt": {
                   "codecId": "pg/timestamptz-date@1",
@@ -238,12 +238,12 @@
                     "expression": "now()",
                     "kind": "function"
                   },
-                  "nullable": false,
+                  "nullable": true,
                   "typeParams": {
                     "precision": 3
                   }
                 },
-                "full_url": {
+                "fullUrl": {
                   "codecId": "pg/text@1",
                   "dataType": "pg/text",
                   "nullable": false
@@ -253,7 +253,7 @@
                   "dataType": "pg/uuid",
                   "nullable": false
                 },
-                "short_url": {
+                "short": {
                   "codecId": "pg/text@1",
                   "dataType": "pg/text",
                   "nullable": false
@@ -303,7 +303,7 @@
               "uniques": [
                 {
                   "columns": [
-                    "short_url"
+                    "short"
                   ]
                 }
               ]
@@ -377,7 +377,7 @@
         "kind": "postgres-schema"
       }
     },
-    "storageHash": "e056853e7e8f4e8bc42b2bd5d19616131185d200e92eeb0f151bd038015a903a"
+    "storageHash": "a9b4c6733b4b962ccbced2501cf8c42f7cd14a9a3c48194a543660cb9ca25ddf"
   },
   "execution": {
     "executionHash": "b8e01731fdf08a456536af9916aed2e59e8b632028bd351fdd9b675d48eed975",

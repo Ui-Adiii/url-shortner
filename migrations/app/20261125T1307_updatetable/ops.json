@@ -1,0 +1,366 @@
+[
+  {
+    "id": "dropConstraint.ShortUrl.ShortUrl_short_url_key",
+    "label": "Drop constraint \"ShortUrl_short_url_key\" on \"ShortUrl\"",
+    "operationClass": "widening",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "unique",
+        "name": "ShortUrl_short_url_key",
+        "table": "ShortUrl"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure constraint \"ShortUrl_short_url_key\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "ShortUrl_short_url_key",
+          "public",
+          "\"public\".\"ShortUrl\""
+        ],
+        "expectation": {
+          "expects": "present",
+          "object": "constraint \"ShortUrl_short_url_key\" on \"ShortUrl\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "drop constraint \"ShortUrl_short_url_key\"",
+        "sql": "ALTER TABLE \"public\".\"ShortUrl\" DROP CONSTRAINT \"ShortUrl_short_url_key\""
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify constraint \"ShortUrl_short_url_key\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "ShortUrl_short_url_key",
+          "public",
+          "\"public\".\"ShortUrl\""
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "constraint \"ShortUrl_short_url_key\" on \"ShortUrl\""
+        }
+      }
+    ]
+  },
+  {
+    "id": "dropColumn.ShortUrl.full_url",
+    "label": "Drop column \"full_url\" from \"ShortUrl\"",
+    "operationClass": "destructive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "column",
+        "name": "full_url",
+        "table": "ShortUrl"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure column \"full_url\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "ShortUrl",
+          "full_url"
+        ],
+        "expectation": {
+          "expects": "present",
+          "object": "column \"full_url\" on \"ShortUrl\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "drop column \"full_url\"",
+        "sql": "ALTER TABLE \"public\".\"ShortUrl\" DROP COLUMN \"full_url\""
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify column \"full_url\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "ShortUrl",
+          "full_url"
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "column \"full_url\" on \"ShortUrl\""
+        }
+      }
+    ]
+  },
+  {
+    "id": "dropColumn.ShortUrl.short_url",
+    "label": "Drop column \"short_url\" from \"ShortUrl\"",
+    "operationClass": "destructive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "column",
+        "name": "short_url",
+        "table": "ShortUrl"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure column \"short_url\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "ShortUrl",
+          "short_url"
+        ],
+        "expectation": {
+          "expects": "present",
+          "object": "column \"short_url\" on \"ShortUrl\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "drop column \"short_url\"",
+        "sql": "ALTER TABLE \"public\".\"ShortUrl\" DROP COLUMN \"short_url\""
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify column \"short_url\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "ShortUrl",
+          "short_url"
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "column \"short_url\" on \"ShortUrl\""
+        }
+      }
+    ]
+  },
+  {
+    "id": "column.ShortUrl.fullUrl",
+    "label": "Add column fullUrl to ShortUrl",
+    "summary": "Adds column fullUrl to table ShortUrl",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "ShortUrl"
+      }
+    },
+    "operationClass": "additive",
+    "precheck": [
+      {
+        "description": "ensure column \"fullUrl\" is missing",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "ShortUrl",
+          "fullUrl"
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "column \"fullUrl\" on \"ShortUrl\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "add column \"fullUrl\"",
+        "sql": "ALTER TABLE \"public\".\"ShortUrl\" ADD COLUMN \"fullUrl\" text DEFAULT ('') NOT NULL"
+      },
+      {
+        "description": "drop temporary default from column \"fullUrl\"",
+        "sql": "ALTER TABLE \"public\".\"ShortUrl\" ALTER COLUMN \"fullUrl\" DROP DEFAULT"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify column \"fullUrl\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "ShortUrl",
+          "fullUrl"
+        ],
+        "expectation": {
+          "expects": "present",
+          "object": "column \"fullUrl\" on \"ShortUrl\""
+        }
+      },
+      {
+        "description": "verify column \"fullUrl\" is NOT NULL",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3 AND \"is_nullable\" = $4)) AS \"result\"",
+        "params": [
+          "public",
+          "ShortUrl",
+          "fullUrl",
+          "NO"
+        ]
+      },
+      {
+        "description": "verify column \"fullUrl\" has no default after temporary default removal",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3 AND \"column_default\" IS NOT NULL)) AS \"result\"",
+        "params": [
+          "public",
+          "ShortUrl",
+          "fullUrl"
+        ]
+      },
+      {
+        "description": "verify column \"fullUrl\" has type \"text\"",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_attribute\" AS \"a\" INNER JOIN \"pg_class\" AS \"c\" ON \"c\".\"oid\" = \"a\".\"attrelid\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"relnamespace\" WHERE (\"n\".\"nspname\" = $1 AND \"c\".\"relname\" = $2 AND \"a\".\"attname\" = $3 AND (format_type(\"a\".\"atttypid\", \"a\".\"atttypmod\")) = $4 AND NOT (\"a\".\"attisdropped\"))) AS \"result\"",
+        "params": [
+          "public",
+          "ShortUrl",
+          "fullUrl",
+          "text"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "column.ShortUrl.short",
+    "label": "Add column short to ShortUrl",
+    "summary": "Adds column short to table ShortUrl",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "column",
+        "name": "short",
+        "table": "ShortUrl"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure column \"short\" is missing",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "ShortUrl",
+          "short"
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "column \"short\" on \"ShortUrl\""
+        }
+      },
+      {
+        "description": "ensure table \"ShortUrl\" is empty before adding NOT NULL column without default",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"public\".\"ShortUrl\" LIMIT 1) AS \"result\"",
+        "params": [],
+        "meta": {
+          "requiredColumn": {
+            "table": "ShortUrl",
+            "column": "short",
+            "reason": "newField"
+          }
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "add column \"short\"",
+        "sql": "ALTER TABLE \"public\".\"ShortUrl\" ADD COLUMN \"short\" text NOT NULL"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify column \"short\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "ShortUrl",
+          "short"
+        ],
+        "expectation": {
+          "expects": "present",
+          "object": "column \"short\" on \"ShortUrl\""
+        }
+      },
+      {
+        "description": "verify column \"short\" is NOT NULL",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3 AND \"is_nullable\" = $4)) AS \"result\"",
+        "params": [
+          "public",
+          "ShortUrl",
+          "short",
+          "NO"
+        ]
+      },
+      {
+        "description": "verify column \"short\" has type \"text\"",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_attribute\" AS \"a\" INNER JOIN \"pg_class\" AS \"c\" ON \"c\".\"oid\" = \"a\".\"attrelid\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"relnamespace\" WHERE (\"n\".\"nspname\" = $1 AND \"c\".\"relname\" = $2 AND \"a\".\"attname\" = $3 AND (format_type(\"a\".\"atttypid\", \"a\".\"atttypmod\")) = $4 AND NOT (\"a\".\"attisdropped\"))) AS \"result\"",
+        "params": [
+          "public",
+          "ShortUrl",
+          "short",
+          "text"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "unique.ShortUrl.ShortUrl_short_key",
+    "label": "Add unique constraint on \"ShortUrl\" (short)",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "unique",
+        "name": "ShortUrl_short_key",
+        "table": "ShortUrl"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure constraint \"ShortUrl_short_key\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "ShortUrl_short_key",
+          "public",
+          "\"public\".\"ShortUrl\""
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "constraint \"ShortUrl_short_key\" on \"ShortUrl\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "add unique constraint \"ShortUrl_short_key\"",
+        "sql": "ALTER TABLE \"public\".\"ShortUrl\" ADD CONSTRAINT \"ShortUrl_short_key\" UNIQUE (\"short\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify unique constraint \"ShortUrl_short_key\" exists on (short)",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3) AND \"c\".\"contype\" = $4 AND (SELECT coalesce(jsonb_agg(key_attribute.attname ORDER BY key_column.position), '[]'::jsonb) FROM unnest(\"c\".\"conkey\"::int2[]) WITH ORDINALITY AS key_column(attnum, position) JOIN pg_attribute key_attribute ON key_attribute.attrelid = \"c\".\"conrelid\" AND key_attribute.attnum = key_column.attnum) = ($5)::jsonb)) AS \"result\"",
+        "params": [
+          "ShortUrl_short_key",
+          "public",
+          "\"public\".\"ShortUrl\"",
+          "u",
+          "[\"short\"]"
+        ]
+      }
+    ]
+  }
+]
