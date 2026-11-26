@@ -4,15 +4,13 @@ import type { IShortUrl } from "../types/url.js";
 class UrlRepository {
   saveUrl(data: Pick<IShortUrl, "fullUrl" | "userId" | "short">) {
     try {
-      console.log(data.fullUrl, data.short, data.userId);
-
       return db.orm.public.ShortUrl.create({
         fullUrl: data.fullUrl,
         short: data.short as string,
         userId: data.userId,
       });
     } catch (error) {
-      console.error(error)
+      console.error(error);
       throw error;
     }
   }
@@ -27,9 +25,24 @@ class UrlRepository {
         clicks: (shortUrl.clicks ?? 0) + 1,
       });
     } catch (error) {
-      console.error(error)
+      console.error(error);
       throw error;
     }
+  }
+
+  async getAllShortUrls(
+    userId: string,
+    limit: number ,
+    page: number,
+    order: "asc" | "desc"
+  ) {
+    return db.orm.public.ShortUrl.where({ userId })
+      .orderBy((s) =>
+        order === "asc" ? s.createdAt.asc() : s.createdAt.desc(),
+      )
+      .limit(limit)
+      .offset((page - 1) * limit)
+      .all();
   }
 }
 

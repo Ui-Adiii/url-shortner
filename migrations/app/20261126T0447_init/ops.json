@@ -45,7 +45,7 @@
     "execute": [
       {
         "description": "create table \"ShortUrl\"",
-        "sql": "CREATE TABLE \"public\".\"ShortUrl\" (\n  \"clicks\" int4 DEFAULT 0 NOT NULL,\n  \"createdAt\" timestamptz(3) DEFAULT (now()) NOT NULL,\n  \"full_url\" text NOT NULL,\n  \"id\" uuid NOT NULL,\n  \"short_url\" text NOT NULL,\n  \"userId\" text,\n  PRIMARY KEY (\"id\")\n)",
+        "sql": "CREATE TABLE \"public\".\"ShortUrl\" (\n  \"clicks\" int4 DEFAULT 0,\n  \"createdAt\" timestamptz(3) DEFAULT (now()),\n  \"fullUrl\" text NOT NULL,\n  \"id\" uuid NOT NULL,\n  \"short\" text NOT NULL,\n  \"userId\" text,\n  PRIMARY KEY (\"id\")\n)",
         "params": []
       }
     ],
@@ -94,7 +94,7 @@
     "execute": [
       {
         "description": "create table \"User\"",
-        "sql": "CREATE TABLE \"public\".\"User\" (\n  \"avatar\" text,\n  \"createdAt\" timestamptz(3) DEFAULT (now()) NOT NULL,\n  \"email\" text NOT NULL,\n  \"id\" text NOT NULL,\n  \"name\" text NOT NULL,\n  \"password\" text NOT NULL,\n  \"updatedAt\" timestamptz(3) NOT NULL,\n  PRIMARY KEY (\"id\")\n)",
+        "sql": "CREATE TABLE \"public\".\"User\" (\n  \"avatar\" text,\n  \"createdAt\" timestamptz(3) DEFAULT (now()) NOT NULL,\n  \"email\" text NOT NULL,\n  \"id\" text NOT NULL,\n  \"name\" text NOT NULL,\n  \"password\" text NOT NULL,\n  \"updatedAt\" timestamptz(3),\n  PRIMARY KEY (\"id\")\n)",
         "params": []
       }
     ],
@@ -115,49 +115,49 @@
     ]
   },
   {
-    "id": "unique.ShortUrl.ShortUrl_short_url_key",
-    "label": "Add unique constraint on \"ShortUrl\" (short_url)",
+    "id": "unique.ShortUrl.ShortUrl_short_key",
+    "label": "Add unique constraint on \"ShortUrl\" (short)",
     "operationClass": "additive",
     "target": {
       "id": "postgres",
       "details": {
         "schema": "public",
         "objectType": "unique",
-        "name": "ShortUrl_short_url_key",
+        "name": "ShortUrl_short_key",
         "table": "ShortUrl"
       }
     },
     "precheck": [
       {
-        "description": "ensure constraint \"ShortUrl_short_url_key\" does not exist",
+        "description": "ensure constraint \"ShortUrl_short_key\" does not exist",
         "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
         "params": [
-          "ShortUrl_short_url_key",
+          "ShortUrl_short_key",
           "public",
           "\"public\".\"ShortUrl\""
         ],
         "expectation": {
           "expects": "absent",
-          "object": "constraint \"ShortUrl_short_url_key\" on \"ShortUrl\""
+          "object": "constraint \"ShortUrl_short_key\" on \"ShortUrl\""
         }
       }
     ],
     "execute": [
       {
-        "description": "add unique constraint \"ShortUrl_short_url_key\"",
-        "sql": "ALTER TABLE \"public\".\"ShortUrl\" ADD CONSTRAINT \"ShortUrl_short_url_key\" UNIQUE (\"short_url\")"
+        "description": "add unique constraint \"ShortUrl_short_key\"",
+        "sql": "ALTER TABLE \"public\".\"ShortUrl\" ADD CONSTRAINT \"ShortUrl_short_key\" UNIQUE (\"short\")"
       }
     ],
     "postcheck": [
       {
-        "description": "verify unique constraint \"ShortUrl_short_url_key\" exists on (short_url)",
+        "description": "verify unique constraint \"ShortUrl_short_key\" exists on (short)",
         "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3) AND \"c\".\"contype\" = $4 AND (SELECT coalesce(jsonb_agg(key_attribute.attname ORDER BY key_column.position), '[]'::jsonb) FROM unnest(\"c\".\"conkey\"::int2[]) WITH ORDINALITY AS key_column(attnum, position) JOIN pg_attribute key_attribute ON key_attribute.attrelid = \"c\".\"conrelid\" AND key_attribute.attnum = key_column.attnum) = ($5)::jsonb)) AS \"result\"",
         "params": [
-          "ShortUrl_short_url_key",
+          "ShortUrl_short_key",
           "public",
           "\"public\".\"ShortUrl\"",
           "u",
-          "[\"short_url\"]"
+          "[\"short\"]"
         ]
       }
     ]

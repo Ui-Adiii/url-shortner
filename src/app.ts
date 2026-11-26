@@ -13,7 +13,7 @@ app.use(cookieParser())
 
 app.use("/api/v1/users",userRouter)
 app.use("/api/v1/urls",urlRouter)
-app.get("/:id", redirectFromShortUrl);
+app.get("/:short", redirectFromShortUrl);
 
 
 

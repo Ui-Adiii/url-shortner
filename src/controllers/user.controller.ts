@@ -88,7 +88,7 @@ const getMe = asyncHandler(async (req: Request, res: Response) => {
   return res
     .status(200)
     .json({
-      message: "user Logout successfully",
+      message: "user fetched successfully",
       success: true,
       data: {
         id:user?.id,

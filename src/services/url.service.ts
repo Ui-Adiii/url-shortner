@@ -3,12 +3,25 @@ import type { IShortUrl } from "../types/url.js";
 import { generateNanoId } from "../utils/shortUrl.js";
 
 class UrlService {
-  createShortUrl(data: Pick<IShortUrl,"fullUrl"|"userId">) {
+  createShortUrl(data: Pick<IShortUrl, "fullUrl" | "userId">) {
     const short = generateNanoId();
-    return urlRepository.saveUrl({fullUrl:data.fullUrl,short,userId:data.userId});
+    return urlRepository.saveUrl({
+      fullUrl: data.fullUrl,
+      short,
+      userId: data.userId,
+    });
   }
-  getUrlById(id: string) { 
-    return urlRepository.getShortUrl(id);
+  getUrlById(short: string) {
+    return urlRepository.getShortUrl(short);
+  }
+  getAllShortUrls(
+    userId: string,
+    page: number ,
+    limit: number,
+    order: "asc" | "desc",
+  ) {
+
+    return urlRepository.getAllShortUrls(userId, limit, page, order);
   }
 }
 

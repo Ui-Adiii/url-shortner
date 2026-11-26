@@ -1,6 +1,6 @@
 #!/usr/bin/env -S node
-import type { Contract as End } from '../../snapshots/f3ddfff29567ec136c83d0e9cac8133da1cbae68299ec8cfc1e8c00ffcb73372/contract';
-import endContract from '../../snapshots/f3ddfff29567ec136c83d0e9cac8133da1cbae68299ec8cfc1e8c00ffcb73372/contract.json' with { type: 'json' };
+import type { Contract as End } from '../../snapshots/a9b4c6733b4b962ccbced2501cf8c42f7cd14a9a3c48194a543660cb9ca25ddf/contract';
+import endContract from '../../snapshots/a9b4c6733b4b962ccbced2501cf8c42f7cd14a9a3c48194a543660cb9ca25ddf/contract.json' with { type: 'json' };
 import {
   Migration,
   MigrationCLI,
@@ -21,20 +21,15 @@ export default class M extends Migration<never, End> {
         schema: 'public',
         table: 'ShortUrl',
         columns: [
-          col('clicks', 'int4', {
-            notNull: true,
-            default: lit(0),
-            codecRef: { codecId: 'pg/int4@1' },
-          }),
+          col('clicks', 'int4', { default: lit(0), codecRef: { codecId: 'pg/int4@1' } }),
           col('createdAt', 'timestamptz(3)', {
-            notNull: true,
             default: fn(sql`now()`),
             codecRef: { codecId: 'pg/timestamptz-date@1', typeParams: { precision: 3 } },
           }),
-          col('full_url', 'text', { notNull: true, codecRef: { codecId: 'pg/text@1' } }),
+          col('fullUrl', 'text', { notNull: true, codecRef: { codecId: 'pg/text@1' } }),
           col('id', 'uuid', { notNull: true, codecRef: { codecId: 'pg/uuid@1' } }),
-          col('short_url', 'text', { notNull: true, codecRef: { codecId: 'pg/text@1' } }),
-          col('userId', 'uuid', { codecRef: { codecId: 'pg/uuid@1' } }),
+          col('short', 'text', { notNull: true, codecRef: { codecId: 'pg/text@1' } }),
+          col('userId', 'text', { codecRef: { codecId: 'pg/text@1' } }),
         ],
         constraints: [primaryKey(['id'])],
       }),
@@ -53,7 +48,6 @@ export default class M extends Migration<never, End> {
           col('name', 'text', { notNull: true, codecRef: { codecId: 'pg/text@1' } }),
           col('password', 'text', { notNull: true, codecRef: { codecId: 'pg/text@1' } }),
           col('updatedAt', 'timestamptz(3)', {
-            notNull: true,
             codecRef: { codecId: 'pg/timestamptz-date@1', typeParams: { precision: 3 } },
           }),
         ],
@@ -62,8 +56,8 @@ export default class M extends Migration<never, End> {
       this.addUnique({
         schema: 'public',
         table: 'ShortUrl',
-        constraint: 'ShortUrl_short_url_key',
-        columns: ['short_url'],
+        constraint: 'ShortUrl_short_key',
+        columns: ['short'],
       }),
       this.addUnique({
         schema: 'public',
