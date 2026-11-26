@@ -275,6 +275,22 @@ Body:
 }
 ```
 
+#### Get Short URLS
+```http
+GET /api/v1/urls
+Authorization: Bearer <token>
+# or Cookie: token=<token>
+Content-Type: application/json
+```
+
+**Response:**
+```json
+{
+    "message": "urls fetched successfully",
+    "urls":[]
+}
+```
+
 #### Redirect Short URL
 ```http
 GET /:id
@@ -325,23 +341,3 @@ The project follows a **layered architecture**:
 6. **Utils** — Helper functions (AppError, asyncHandler, token, shortUrl)
 7. **Types** — TypeScript interfaces and type augmentations
 8. **Validations** — express-validator rules for request validation
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/your-feature`)
-3. Commit your changes (`git commit -m 'Add some feature'`)
-4. Push to the branch (`git push origin feature/your-feature`)
-5. Open a Pull Request
-
-## 📄 License
-
-This project is open source and available under the [MIT License](LICENSE).
-
-## 🙏 Acknowledgments
-
-- [Prisma ORM](https://www.prisma.io/) — Database toolkit
-- [Express](https://expressjs.com/) — Web framework
-- [Cloudinary](https://cloudinary.com/) — Image/video management
-- [nanoid](https://github.com/ai/nanoid) — Unique short ID generation
-- [jsonwebtoken](https://github.com/auth0/node-jsonwebtoken) — JWT implementation
